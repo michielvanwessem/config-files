@@ -55,7 +55,9 @@ esac
 
 if [ "${color_prompt}" == "yes" ] ; then
     # Set our prompt dependant on user.
-    if [ $EUID -ne 0 ]; then
+    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+        export PS1='\[\033[38;5;75m\](\[$(tput sgr0)\]\[\033[38;5;130m\]\A\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\])\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\][ \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;70m\]\u\[$(tput sgr0)\]\[\033[38;5;3m\]@${CUSTHOST}\[$(tput sgr0)\]: \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;4m\]\w\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\] ]\[\033[38;5;28m\]$(__git_ps1)\[$(tput sgr0)\] \[$(tput bold)\]\[\033[38;5;248m\]\$\[$(tput sgr0)\] '
+    elif [ $EUID -ne 0 ]; then
         export PS1='\[\033[38;5;75m\](\[$(tput sgr0)\]\[\033[38;5;130m\]\A\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\])\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\][ \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[\033[38;5;10m\]@${CUSTHOST}\[$(tput sgr0)\]: \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;39m\]\w\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\] ]\[\033[38;5;28m\]$(__git_ps1)\[$(tput sgr0)\] \[$(tput bold)\]\[\033[38;5;248m\]\$\[$(tput sgr0)\] '
     elif [ $EUID -eq 0 ]; then
         export PS1='\[\033[38;5;75m\](\[$(tput sgr0)\]\[\033[38;5;130m\]\A\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\])\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\][ \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;160m\]\u\[$(tput sgr0)\]\[\033[38;5;10m\]@${CUSTHOST}\[$(tput sgr0)\]: \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;124m\]\w\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\] ]\[\033[38;5;160m\]$(__git_ps1)\[$(tput sgr0)\] \[$(tput bold)\]\[\033[38;5;248m\]\$\[$(tput sgr0)\] '
