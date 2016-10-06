@@ -26,6 +26,9 @@ if [ -d ${HOME}/.bash_completion.d ] ; then
 	done
 fi
 
+# Extend the path
+PATH=${PATH}:${HOME}/bin:.
+
 # Manage History
 HISTCONTROL=ignoreboth
 HISTTIMEFORMAT="[%F %H:%M] "
@@ -43,6 +46,17 @@ VISUAL=vim
 # Pager
 PAGER=less
 
+# Grep Options
+GREP_OPTIONS="--color=auto"
+GREP_COLOR="1;33"
+
+# colored GCC warnings and errors
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# Be sure xfce's Terminal doesn't draw windows too slowly
+# (could disable compositing instead of this)
+export XLIB_SKIP_ARGB_VISUALS=1
+
 # Set up our mail
 MAIL=/mail/${LOGNAME:?}
 
@@ -53,17 +67,27 @@ case "$TERM" in
     *) color_prompt=no ;;
 esac
 
+# Set our prompt dependant on user.
 if [ "${color_prompt}" == "yes" ] ; then
-    # Set our prompt dependant on user.
+    # Are we logged in via SSH?
     if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-        export PS1='\[\033[38;5;75m\](\[$(tput sgr0)\]\[\033[38;5;130m\]\A\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\])\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\][ \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;70m\]\u\[$(tput sgr0)\]\[\033[38;5;3m\]@${CUSTHOST}\[$(tput sgr0)\]: \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;4m\]\w\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\] ]\[\033[38;5;28m\]$(__git_ps1)\[$(tput sgr0)\] \[$(tput bold)\]\[\033[38;5;248m\]\$\[$(tput sgr0)\] '
-    elif [ $EUID -ne 0 ]; then
+        if [ $EUID -ne 0 ]; then
+            export PS1='\[\033[38;5;75m\](\[$(tput sgr0)\]\[\033[38;5;130m\]\A\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\])\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\][ \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;70m\]\u\[$(tput sgr0)\]\[\033[38;5;3m\]@${CUSTHOST}\[$(tput sgr0)\]: \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;4m\]\w\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\] ]\[\033[38;5;28m\]$(__git_ps1)\[$(tput sgr0)\] \[$(tput bold)\]\[\033[38;5;248m\]\$\[$(tput sgr0)\] '
+        elif [ $EUID -eq 0 ]; then
+            export PS1='\[\033[38;5;75m\](\[$(tput sgr0)\]\[\033[38;5;130m\]\A\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\])\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\][ \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;160m\]\u\[$(tput sgr0)\]\[\033[38;5;3m\]@${CUSTHOST}\[$(tput sgr0)\]: \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;1m\]\w\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\] ]\[\033[38;5;1m\]$(__git_ps1)\[$(tput sgr0)\] \[$(tput bold)\]\[\033[38;5;248m\]\$\[$(tput sgr0)\] '
+        else
+            export PS1="[ \u@${CUSTHOST}: \w ] \\$ "
+        fi
+    fi
+
+    # For nornal local users:
+    if [ $EUID -ne 0 ]; then
         export PS1='\[\033[38;5;75m\](\[$(tput sgr0)\]\[\033[38;5;130m\]\A\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\])\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\][ \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;10m\]\u\[$(tput sgr0)\]\[\033[38;5;10m\]@${CUSTHOST}\[$(tput sgr0)\]: \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;39m\]\w\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\] ]\[\033[38;5;28m\]$(__git_ps1)\[$(tput sgr0)\] \[$(tput bold)\]\[\033[38;5;248m\]\$\[$(tput sgr0)\] '
     elif [ $EUID -eq 0 ]; then
         export PS1='\[\033[38;5;75m\](\[$(tput sgr0)\]\[\033[38;5;130m\]\A\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\])\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\][ \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;160m\]\u\[$(tput sgr0)\]\[\033[38;5;10m\]@${CUSTHOST}\[$(tput sgr0)\]: \[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;124m\]\w\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;75m\] ]\[\033[38;5;160m\]$(__git_ps1)\[$(tput sgr0)\] \[$(tput bold)\]\[\033[38;5;248m\]\$\[$(tput sgr0)\] '
     fi
 else
-    PS1="[ \u@\${CUSTHOST}:\w ] \\$ "
+    PS1="[ \u@\${CUSTHOST}: \w ] \\$ "
 fi
 
 # enable color support of ls and also add handy aliases
@@ -81,8 +105,21 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias cls="clear;ls"
+alias irc='screen -AadRRS irssi irssi'
 
-export PS1 MAIL EDITOR TERM VISUAL PAGER
+# Because reasons
+alias dicker=docker
+alias moist=most
+alias goit=git
+
+# Some weird but usefull bash functions and stuff
+killssh() { SSHPID=$(ps aux | grep $USER | grep ssh | grep "eternal-september" | awk '{ print $2 }') && kill $SSHPID ; }
+cdls() { builtin cd "$@" && ls -l; }
+mkcd() { mkdir -p "$@" && builtin cd "$@"; }
+
+# Export the variables
+export PATH PS1 MAIL EDITOR TERM VISUAL PAGER GREP_OPTIONS GREP_COLOR 
 
 # Folder structure setup
 if [ ! -d ~/.vim/backup ] ; then
