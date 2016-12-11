@@ -1,0 +1,10 @@
+# ~/.bash_aliases
+#
+#
+# Because reasons
+alias dicker=docker
+alias moist=most
+alias goit=git
+
+alias cls="clear;ls --color=auto"
+alias irc='screen -AadRRS irssi irssi'
