@@ -1,11 +1,17 @@
+# ${HOME}/.screenrc
+# Screen(1) Configuration file
+
+# don't display the copyright page
+startup_message off                 
+
 # no annoying audible bell, please
 vbell off
 
 # detach on hangup
-autodetach on
+autodetach on 
 
-# don't display the copyright pae
-startup_message off
+# enable support for the "alternate screen" capability in all windows
+altscreen on
 
 # emulate .logout message
 pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
@@ -13,42 +19,24 @@ pow_detach_msg "Screen session of \$LOGNAME \$:cr:\$:nl:ended."
 # Deal with crappy UTF8 support from within screen
 defutf8 on
 
-# advertise hardstatus support to $TERMCAP
-# termcapinfo  * '' 'hs:ts=\E_:fs=\E\\:ds=\E_\E\\'
-
 # make the shell in every window a login shell
 shell -$SHELL
 
-# autoaka testing
-# shellaka '> |tcsh'
-# shellaka '$ |sh'
+# Scrollback buffer
+defscrollback 50000
 
-# set every new windows hardstatus line to somenthing descriptive
-# defhstatus "screen: ^En (^Et)"
-
-defscrollback 1000
-
-# don't kill window after the process died
-# zombie "^["
-
-# enable support for the "alternate screen" capability in all windows
-# altscreen on
-
-# xterm tweaks
-
-#xterm understands both im/ic and doesn't have a status line.
-#Note: Do not specify im and ic in the real termcap/info file as
-#some programs (e.g. vi) will not work anymore.
+# Xterm understands both im/ic and doesn't have a status line. Note: Do not 
+# specify im and ic in the real termcap/info file as some programs (e.g. vi) 
+# will not work anymore.
 termcap  xterm hs@:cs=\E[%i%d;%dr:im=\E[4h:ei=\E[4l
 terminfo xterm hs@:cs=\E[%i%p1%d;%p2%dr:im=\E[4h:ei=\E[4l
 
-#80/132 column switching must be enabled for ^AW to work
-#change init sequence to not switch width
+# 80/132 column switching must be enabled for ^AW to work change init sequence 
+# to not switch width
 termcapinfo  xterm Z0=\E[?3h:Z1=\E[?3l:is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l
 
 # Make the output buffer large for (fast) xterms.
-#termcapinfo xterm* OL=10000
-termcapinfo xterm* OL=100
+termcapinfo xterm* OL=10000
 
 # tell screen that xterm can switch to dark background and has function
 # keys.
@@ -65,13 +53,12 @@ termcapinfo xterm 'vi=\E[?25l:ve=\E[34h\E[?25h:vs=\E[34l'
 # emulate part of the 'K' charset
 termcapinfo   xterm 'XC=K%,%\E(B,[\304,\\\\\326,]\334,{\344,|\366,}\374,~\337'
 
-# xterm-52 tweaks:
-# - uses background color for delete operations
+# xterm-52 tweaks: - uses background color for delete operations
 termcapinfo xterm* be
 
 # wyse terminals
-#wyse-75-42 must have flow control (xo = "terminal uses xon/xoff")
-#essential to have it here, as this is a slow terminal.
+# wyse-75-42 must have flow control (xo = "terminal uses xon/xoff")
+# essential to have it here, as this is a slow terminal.
 termcapinfo wy75-42 xo:hs@
 
 # New termcap sequences for cursor application mode.
@@ -89,9 +76,8 @@ termcapinfo linux C8
 # termcapinfo rxvt C8
 
 
-# keybindings
-
-#remove some stupid / dangerous key bindings
+# Keybindings
+# Remove some stupid / dangerous key bindings
 bind k
 bind ^k
 bind .
@@ -99,25 +85,26 @@ bind ^\
 bind \\
 bind ^h
 bind h
-#make them better
+# Make them slightly more sane instead
 bind 'K' kill
 bind 'I' login on
 bind 'O' login off
 bind '}' history
-
-# Yet another hack:
-# Prepend/append register [/] to the paste if ^a^] is pressed.
-# This lets me have autoindent mode in vi.
-register [ "\033:se noai\015a"
-register ] "\033:se ai\015a"
-bind ^] paste [.]
-
-hardstatus alwayslastline
-hardstatus string '%{= bG}[%{= bC}host::%{bY}%H%{bG}][screens: %= %{bw}%?%-Lw%?%{= br}(%{g}%n*%f %t%?(%u)%?%{= br})%{= bw}%?%+Lw%?%?%= %{= bG}]%{= bG}[%{= bw}%Y/%m/%d %0c UTC%{= bG}]%{g}'
-
+# Some other usefull keybindings
 bind ~ activity "activity in %n (%t) [%w:%s]"
 bind * activity "activity in %n (%t) [%w:%s]"
 bind = resize =
 bind + resize +1
 bind - resize -1
 bind _ resize max
+# Yet another hack; Prepend/append register [/] to the paste if ^a^] is pressed.
+# This lets me have autoindent mode in vi.
+register [ "\033:se noai\015a"
+register ] "\033:se ai\015a"
+bind ^] paste [.]
+
+# Change the hardstatus settings to give an window list at the bottom of the                                                                        
+# screen, with the time and date and with the current window highlighted                                                                            
+hardstatus alwayslastline
+hardstatus string '%{= kK}[ %{K}host: %{b}%u%H %{K}][screens: %= %{= kK}%?%-Lw%?%{r}(%{b}%n*%f%t%?(%u)%?%{r})%{K}%?%+Lw%?%?%= %{K}][%{K} %D, %d %M %Y @ %0c %{K}]'
+
