@@ -58,6 +58,7 @@ case "$TERM" in
     xterm-color) color_prompt=yes ;;
     xterm-256color) color_prompt=yes ;;
     tmux-256color) color_prompt=yes ;;
+    screen-256color) color_prompt=yes ;;
     *) color_prompt=no ;;
 esac
 
@@ -134,6 +135,10 @@ alias l='ls -CF --color=auto'
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
+
+# If we have any quirks to deal with)
+if [ -f ~/.bash_quirks   ]; then
+    source ~/.bash_quirks
 
 # Some weird but usefull bash functions and stuff
 killssh() { SSHPID=$(ps aux | grep $USER | grep ssh | grep "eternal-september" | awk '{ print $2 }') && kill $SSHPID ; }
