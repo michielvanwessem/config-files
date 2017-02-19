@@ -137,8 +137,9 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 # If we have any quirks to deal with)
-if [ -f ~/.bash_quirks   ]; then
+if [ -f ~/.bash_quirks ]; then
     source ~/.bash_quirks
+fi
 
 # Some weird but usefull bash functions and stuff
 killssh() { SSHPID=$(ps aux | grep $USER | grep ssh | grep "eternal-september" | awk '{ print $2 }') && kill $SSHPID ; }
