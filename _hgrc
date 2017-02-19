@@ -1,0 +1,33 @@
+[alias]
+glog = log --graph -l 50 --template '\''[\033[1m{branch}\033[0m{if(tags,":")}\033[33m{tags}\033[0m{if(bookmarks,":")}\033[1;36m{bookmarks}\033[0m] {node|short} \033[31m{author|user}:\033[37m {desc|firstline} \033[32m({phase})\033[37m\n'\'''
+
+[color]
+status.added = green bold
+status.removed = red bold
+status.deleted = cyan bold
+status.unknown = blue bold
+status.ignored = black bold
+diff.diffline = yellow bold
+diff.extended = cyan bold
+diff.file_a = red 
+diff.file_b = green 
+diff.hunk = magenta bold
+diff.deleted = red
+diff.inserted = green
+diff.changed = white
+diff.trailingwhitespace = bold red_background
+
+[extensions]
+flow = /usr/local/bin/hgflow.py
+prompt = /usr/local/bin/hgprompt.py
+color = 
+
+[pager]
+pager = LESS='FSRX' less
+ignore = version, update, flow init
+
+[ui]
+username = %USER%
+verbose = True
+editor = vim
+
