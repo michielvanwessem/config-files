@@ -1,6 +1,9 @@
-# ~/.bashrc
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
 # Michiel van Wessem <michiel.van.wessem@gmail.com>
-#
+
 
 # Set our term
 if [ ! -z $TMUX ]; then
@@ -34,8 +37,10 @@ if [ -d ${HOME}/.bash_completion.d ] ; then
 fi
 
 # Manage Bash history file.
-HISTCONTROL=ignoreboth
+HISTCONTROL=eraseup:ignoreboth
+HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history"
 HISTTIMEFORMAT="[%F %H:%M] "
+shopt -s cmdhist
 shopt -s histappend
 HISTSIZE=10000
 HISTFILESIZE=20000
@@ -65,19 +70,18 @@ esac
 if [ "${color_prompt}" == "yes" ]; then
     # Set our prompt dependant on user.
     if [ $EUID -ne 0 ] ; then
-        if [ -f ${HOME}/.bash_promt ]; then
+        if [ -f ${HOME}/.bash_prompt ]; then
             source ${HOME}/.bash_prompt
         else
             PS1='\[$(tput bold)\]\[\033[38;5;8m\]['
-            PS1+='\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\] '
+            PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]\[\033[38;5;2m\]\u'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;7m\]@${CUSTHOST}:'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]\[\033[38;5;12m\]\w'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
-            PS1+='\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;8m\]]'
-            PS1+='\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]'
-            PS1+='\[\033[38;5;196m\]$(__git_ps1)\[$(tput sgr0)\] '
+            PS1+='\[$(tput sgr0)\]\[\033[38;5;8m\]]'
+            PS1+='\[$(tput sgr0)\]\[\033[38;5;196m\]$(__git_ps1)\[$(tput sgr0)\] '
             PS1+='\[$(tput sgr0)\]\[\033[38;5;7m\]\\$'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]'
@@ -91,13 +95,12 @@ if [ "${color_prompt}" == "yes" ]; then
             PS1+='\[$(tput sgr0)\]\[\033[38;5;3m\]\w'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;8m\]]'
-            PS1+='\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]\[\033[38;5;1m\]\\$'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]'
     fi
 else
-    PS1="[\A][ \u@${CUSTHOST}: \w ] \\$ "
+    PS1="[ \u@${CUSTHOST}: \w ] \\$ "
 fi
 
 # enable color support of ls and also add handy aliases
