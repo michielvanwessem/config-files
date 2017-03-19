@@ -1,5 +1,5 @@
 # mercurial prompts
-hg_ps1() {
-    hg prompt "\[\033[38;5;226m\]{{status}}\[$(tput sgr0)\]{\[\033[38;5;8m\](\[\033[38;5;4m\]{branch}}\[$(tput bold)\]\[\033[38;5;8m\])" 2>/dev/null
+__hg_ps1() {
+    hg prompt ' ({{update}}{{branch}}{at {bookmark}{:[{closed}]}{:[{status}]})' 2>/dev/null
 }
 
