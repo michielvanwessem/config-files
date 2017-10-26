@@ -1,4 +1,6 @@
 [alias]
+lol =  log --template '{node|short} | {author|user}: {desc|strip|firstline}
+lola = log --template '{node|short} | {date|isodatesec} | {author|user}: {desc|strip|firstline}\n'
 glog = log --graph -l 50 --template '\''[\033[1m{branch}\033[0m{if(tags,":")}\033[33m{tags}\033[0m{if(bookmarks,":")}\033[1;36m{bookmarks}\033[0m] {node|short} \033[31m{author|user}:\033[37m {desc|firstline} \033[32m({phase})\033[37m\n'\'''
 
 [color]
