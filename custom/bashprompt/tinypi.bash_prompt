@@ -1,10 +1,26 @@
-PS1='\[$(tput bold)\]\[\033[38;5;8m\][ '
+PS1='\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;8m\][ '
 PS1+='\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;12m\]\u'
 PS1+='\[$(tput sgr0)\]\[\033[38;5;7m\]@\h'
 PS1+='\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\]: '
 PS1+='\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;2m\]\w'
 PS1+='\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;8m\] ]'
+PS1+='\[$(tput sgr0)\]\[\033[38;5;12m\]$(__hg_ps1)'
+PS1+='\[$(tput sgr0)\]\[\033[38;5;2m\]$(__git_ps1)'
 PS1+='\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\] '
 PS1+='\[$(tput sgr0)\]\[\033[38;5;7m\]\\$'
 PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
 PS1+='\[$(tput sgr0)\]'
+
+PSROOT='\[$(tput sgr0)\]\[\033[38;5;8m\][ '
+PSROOT+='\[$(tput sgr0)\]\[\033[38;5;1m\]\u'
+PSROOT+='\[$(tput sgr0)\]\[\033[38;5;7m\]@${CUSTHOST}'
+PSROOT+='\[$(tput sgr0)\]\[\033[38;5;15m\]: '
+PSROOT+='\[$(tput sgr0)\]\[\033[38;5;3m\]\w '
+PSROOT+='\[$(tput sgr0)\]\[\033[38;5;8m\] ]'
+PSROOT+='\[$(tput sgr0)\]\[\033[38;5;12m\]$(__hg_ps1)'
+PSROOT+='\[$(tput sgr0)\]\[\033[38;5;2m\]$(__git_ps1)'
+PSROOT+='\[$(tput sgr0)\]\[\033[38;5;7m\] \\$'
+PSROOT+='\[$(tput sgr0)\] '
+
+
+
