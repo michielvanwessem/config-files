@@ -88,6 +88,10 @@ if [ "${color_prompt}" == "yes" ]; then
             PS1+='\[$(tput sgr0)\]'
         fi
     else
+        if [ -f ${HOME}/.bash_prompt ]; then
+            source ${HOME}/.bash_prompt
+        else
+            PS1='\[$(tput bold)\]\[\033[38;5;8m\]['
             PS1+='\[$(tput bold)\]\[\033[38;5;8m\]['
             PS1+='\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]\[\033[38;5;1m\]\u'
@@ -99,6 +103,7 @@ if [ "${color_prompt}" == "yes" ]; then
             PS1+='\[$(tput sgr0)\]\[\033[38;5;1m\]\\$'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]'
+        fi        
     fi
 else
     PS1="[ \u@${CUSTHOST}: \w ] \\$ "
