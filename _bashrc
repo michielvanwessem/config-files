@@ -38,7 +38,7 @@ fi
 
 # Manage Bash history file.
 HISTCONTROL=eraseup:ignoreboth
-HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history"
+HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:killssh"
 HISTTIMEFORMAT="[%F %H:%M] "
 shopt -s cmdhist
 shopt -s histappend
