@@ -8,3 +8,4 @@ alias goit=git
 
 alias cls="clear;ls --color=auto"
 alias irc='screen -AadRRS irssi irssi'
+alias termbin="nc termbin.com 9999"
