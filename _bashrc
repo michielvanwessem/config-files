@@ -5,9 +5,12 @@
 # Michiel van Wessem <michiel.van.wessem@gmail.com>
 
 
-# Set our term
+# Make sure we have the right term, depnding whether we are talking on
+# a proper tty, or in a terminal multiplexers
 if [ ! -z $TMUX ]; then
     TERM="tmux-256color"
+elif [ ! -z $STY ]; then
+    TERM="screen-256color"
 else
     TERM="xterm-256color"
 fi
@@ -67,13 +70,19 @@ case "$TERM" in
     *) color_prompt=no ;;
 esac
 
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
 if [ "${color_prompt}" == "yes" ]; then
     # Set our prompt dependant on user.
     if [ $EUID -ne 0 ] ; then
         if [ -f ${HOME}/.bash_prompt ]; then
             source ${HOME}/.bash_prompt
         else
-            PS1='\[$(tput bold)\]\[\033[38;5;8m\]['
+            PS1='${debian_chroot:+($debian_chroot)}'
+            PS1+='\[$(tput bold)\]\[\033[38;5;8m\]['
             PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]\[\033[38;5;2m\]\u'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;7m\]@${CUSTHOST}:'
@@ -83,7 +92,7 @@ if [ "${color_prompt}" == "yes" ]; then
             PS1+='\[$(tput sgr0)\]\[\033[38;5;8m\]]'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;196m\]$(__hg_ps1)\[$(tput sgr0)\]'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;196m\]$(__git_ps1)\[$(tput sgr0)\]'
-            PS1+='\[$(tput sgr0)\]\[\033[38;5;7m\]\\$'
+            PS1+='\[$(tput sgr0)\]\[\033[38;5;7m\] \$'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]'
         fi
@@ -91,7 +100,7 @@ if [ "${color_prompt}" == "yes" ]; then
         if [ -f ${HOME}/.bash_prompt ]; then
             source ${HOME}/.bash_prompt
         else
-            PS1='\[$(tput bold)\]\[\033[38;5;8m\]['
+            PS1='${debian_chroot:+($debian_chroot)}'
             PS1+='\[$(tput bold)\]\[\033[38;5;8m\]['
             PS1+='\[$(tput sgr0)\]\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]\[\033[38;5;1m\]\u'
@@ -100,7 +109,7 @@ if [ "${color_prompt}" == "yes" ]; then
             PS1+='\[$(tput sgr0)\]\[\033[38;5;3m\]\w'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput bold)\]\[$(tput sgr0)\]\[\033[38;5;8m\]]'
-            PS1+='\[$(tput sgr0)\]\[\033[38;5;1m\]\\$'
+            PS1+='\[$(tput sgr0)\]\[\033[38;5;1m\] \$'
             PS1+='\[$(tput sgr0)\]\[\033[38;5;15m\] '
             PS1+='\[$(tput sgr0)\]'
         fi        
@@ -158,7 +167,7 @@ if [ ! -d ~/.vim/tmp ] ; then
 fi
 
 # Extend the path
-PATH=${PATH}:${HOME}/bin:.
+PATH=${PATH}:${HOME}/.local/bin:${HOME}/bin:.
 
 # Export the variables
 export PATH PS1 PS2 MAIL EDITOR TERM VISUAL PAGER GREP_COLOR GCC_COLORS
